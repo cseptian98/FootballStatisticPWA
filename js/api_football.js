@@ -1,5 +1,5 @@
 const base_url = 'https://api.football-data.org/v2/';
-const token = 'YOUR_API_KEY';
+const token = '5652e38754df4fe5ae30adf26099d344';
 const inggris = 2021;
 const perancis = 2015;
 

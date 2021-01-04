@@ -55,9 +55,9 @@ document.addEventListener('DOMContentLoaded', function () {
                getFavoriteTeam();
             }
 
-            if (this.status == 200) {
+            if (this.status === 200) {
                content.innerHTML = xhttp.responseText;
-            } else if (this.status == 404) {
+            } else if (this.status === 404) {
                content.innerHTML = '<p>Halaman tidak ditemukan.</p>';
             } else {
                content.innerHTML = '<p>Ups.. halaman tidak dapat diakses.</p>';
