@@ -1,4 +1,9 @@
-import { getStandings, getFavoriteTeam } from './api_football';
+import {
+   getStandings,
+   getFavoriteTeam,
+   premier_standing,
+   ligue_standing,
+} from './api_football';
 
 document.addEventListener('DOMContentLoaded', function () {
    // SIDEBAR NAVIGATION
@@ -59,6 +64,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (this.status === 200) {
                content.innerHTML = xhttp.responseText;
+               const slider = document.querySelectorAll('.slider');
+               M.Slider.init(slider);
             } else if (this.status === 404) {
                content.innerHTML = '<p>Halaman tidak ditemukan.</p>';
             } else {

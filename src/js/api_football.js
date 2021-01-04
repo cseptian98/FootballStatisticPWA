@@ -80,9 +80,10 @@ const showStandings = (data) => {
    document.getElementById('standings').innerHTML = standingsHTML;
 };
 
-const getTeam = (team) => {
+const getTeam = () => {
    const urlParams = new URLSearchParams(window.location.search);
    const idParam = urlParams.get('id');
+   const team = `${team_detail}${idParam}`;
 
    showLoader();
    if (idParam !== null) {
@@ -106,11 +107,44 @@ const getTeam = (team) => {
 
 const showTeam = (data) => {
    hideLoader();
-   data.teams.forEach((team) => {
-      const teamElement = document.createElement('get-team');
-      teamElement.teams = team;
-      document.getElementById('team-detail').appendChild(teamElement);
+   let teamHTML = '';
+
+   teamHTML += `<img src=${data.crestUrl.replace(/^http:\/\//i, 'https://')} 
+   onError="this.onerror=null;this.src='/images/default.png';" 
+   width="180" height="180" class="responsive-img center">
+   <br>
+      <h5>${data.name}</h5>
+      <center>
+         <button class="btn red waves-effect waves-light" id="btnDelete"><i class="material-icons left">delete</i>Delete from favorite</button>
+         <button class="btn indigo waves-effect waves-light" id="btnSave"><i class="material-icons left">add</i>Add to favorite</button>
+      </center>
+      <br>
+   <br> `;
+
+   teamHTML += `
+   <table class="responsive-table highlight" width=500>
+      <thead class="indigo lighten-4">
+         <tr>
+            <td>Name</td>
+            <td>Position</td>
+            <td>Nationality</td>
+         </tr>
+      </thead>
+   <tbody>`;
+
+   data.squad.forEach((player) => {
+      teamHTML += `
+      <tr>
+         <td>${player.name}</td>
+         <td>${player.position}</td>
+         <td>${player.nationality}</td>
+      </tr>
+      `;
    });
+
+   teamHTML += '</tbody></table>';
+
+   document.getElementById('team-detail').innerHTML = teamHTML;
 };
 
 const getFavoriteTeam = () => {
@@ -118,6 +152,7 @@ const getFavoriteTeam = () => {
    dbData.then((data) => {
       let timBodyHtml = '';
       if (data.length > 0) {
+         hideLoader();
          data.forEach((team) => {
             timBodyHtml += `
             <div>
@@ -183,4 +218,10 @@ const hideLoader = () => {
    document.getElementById('loader').innerHTML = '';
 };
 
-export { getTeam, getStandings, getFavoriteTeam };
+export {
+   getTeam,
+   getStandings,
+   getFavoriteTeam,
+   premier_standing,
+   ligue_standing,
+};

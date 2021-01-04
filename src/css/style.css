@@ -1,34 +1,39 @@
 .card {
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    border-radius: 5px;
-    padding: 8px;
+   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+   border-radius: 5px;
+   padding: 4px;
 }
 
 h2 {
-    color: cornflowerblue;
-    text-align: center;
+   color: cornflowerblue;
+   text-align: center;
 }
 
 h4 {
-    color: darkslategray;
+   color: darkslategray;
 }
 
 h5 {
-    color: cornflowerblue;
+   color: cornflowerblue;
 }
 
 .gambar {
-    max-width: 500px;
+   max-width: 500px;
 }
 
 .profile header {
-    text-align: center;
+   text-align: center;
 }
 
 .profile img {
-    width: 200px;
+   width: 200px;
 }
 
 a:hover {
-    font-weight: bold;
+   font-weight: bold;
+}
+
+.img-style {
+   cursor: default;
+   margin-top: 8px;
 }

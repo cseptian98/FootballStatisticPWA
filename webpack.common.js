@@ -14,17 +14,19 @@ module.exports = {
       path: __dirname + '/dist',
    },
    module: {
-      rules: {
-         test: /\.css$/,
-         use: [
-            {
-               loader: 'style-loader',
-            },
-            {
-               loader: 'css-loader',
-            },
-         ],
-      },
+      rules: [
+         {
+            test: /\.css$/,
+            use: [
+               {
+                  loader: 'style-loader',
+               },
+               {
+                  loader: 'css-loader',
+               },
+            ],
+         },
+      ],
    },
    plugins: [
       new HTMLWebpackPlugin({
@@ -41,23 +43,23 @@ module.exports = {
          theme_color: '#002171',
          icons: [
             {
-               src: '/img/icon-512.png',
+               src: './src/img/icon-512.png',
                sizes: '512x512',
                type: 'image/png',
             },
             {
-               src: '/img/icon-192.png',
+               src: './src/img/icon-192.png',
                sizes: '192x192',
                type: 'image/png',
             },
             {
-               src: '/img/maskable_icon-192.png',
+               src: './src/img/maskable_icon-192.png',
                sizes: '192x192',
                type: 'image/png',
                purpose: 'any maskable',
             },
             {
-               src: '/img/icon-128.png',
+               src: './src/img/icon-128.png',
                sizes: '128x128',
                type: 'image/png',
             },
@@ -71,7 +73,7 @@ module.exports = {
             { from: './src/team.html', to: '' },
             { from: './src/nav.html', to: '' },
             { from: './src/css', to: 'css' },
-            { from: './src/images', to: 'images' },
+            { from: './src/img', to: 'img' },
             { from: './src/js', to: 'js' },
             { from: './src/pages', to: 'pages' },
          ],
