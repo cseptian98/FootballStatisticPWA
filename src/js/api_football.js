@@ -1,3 +1,10 @@
+import {
+   addFavorite,
+   deleteFavorite,
+   checkData,
+   getFavData,
+} from './db_football';
+
 const base_url = 'https://api.football-data.org/v2/';
 const token = '5652e38754df4fe5ae30adf26099d344';
 const inggris = 2021;
@@ -20,24 +27,24 @@ const fetchApi = (url) => {
       .catch(error);
 };
 
-function status(response) {
+const status = (response) => {
    if (response.status !== 200) {
       console.log('Error : ' + response.status);
       return Promise.reject(new Error(response.statusText));
    } else {
       return Promise.resolve(response);
    }
-}
+};
 
-function json(response) {
+const json = (response) => {
    return response.json();
-}
+};
 
-function error(error) {
+const error = (error) => {
    console.log('Error : ' + error);
-}
+};
 
-function getStandings(league) {
+const getStandings = (league) => {
    showLoader();
    if ('caches' in window) {
       caches.match(league).then((response) => {
@@ -52,11 +59,11 @@ function getStandings(league) {
    fetchApi(league).then((data) => {
       showStandings(data);
    });
-}
+};
 
-function showStandings(data) {
+const showStandings = (data) => {
    hideLoader();
-   var standingsHTML = '';
+   let standingsHTML = '';
    data.standings[0].table.forEach((dt) => {
       standingsHTML += `
                 <td width="10%" class="center">${dt.position}</td>
@@ -71,73 +78,45 @@ function showStandings(data) {
           `;
    });
    document.getElementById('standings').innerHTML = standingsHTML;
-}
+};
 
-function getTeam(team) {
+const getTeam = (team) => {
+   const urlParams = new URLSearchParams(window.location.search);
+   const idParam = urlParams.get('id');
+
    showLoader();
-   if ('caches' in window) {
-      caches.match(team).then((response) => {
-         if (response) {
-            response.json().then((data) => {
-               showTeam(data);
-               buttonAction(data);
-            });
-         }
+   if (idParam !== null) {
+      if ('caches' in window) {
+         caches.match(team).then((response) => {
+            if (response) {
+               response.json().then((data) => {
+                  showTeam(data);
+                  buttonAction(data);
+               });
+            }
+         });
+      }
+
+      fetchApi(team).then((data) => {
+         showTeam(data);
+         buttonAction(data);
       });
    }
+};
 
-   fetchApi(team).then((data) => {
-      showTeam(data);
-      buttonAction(data);
-   });
-}
-
-function showTeam(data) {
+const showTeam = (data) => {
    hideLoader();
-   var teamHTML = '';
-
-   teamHTML += `<img src=${data.crestUrl.replace(
-      /^http:\/\//i,
-      'https://'
-   )} onError="this.onerror=null;this.src='/images/default.png';" width="180" height="180" class="responsive-img center"><br>
-                  <h5>${data.name}</h5>
-                  <center>
-                  <button class="btn red waves-effect waves-light" id="btnDelete"><i class="material-icons left">delete</i>Delete from favorite</button>
-                  <button class="btn indigo waves-effect waves-light" id="btnSave"><i class="material-icons left">add</i>Add to favorite</button>
-                  </center>
-                  <br>
-                <br> `;
-
-   teamHTML += `
-        <table class="responsive-table highlight" width=500>
-            <thead class="indigo lighten-4">
-                <tr>
-                    <td>Name</td>
-                    <td>Position</td>
-                    <td>Nationality</td>
-                </tr>
-            </thead>
-        <tbody>`;
-
-   data.squad.forEach((dt) => {
-      teamHTML += `
-              <tr>
-                <td>${dt.name}</td>
-                <td>${dt.position}</td>
-                <td>${dt.nationality}</td>
-              </tr>
-          `;
+   data.teams.forEach((team) => {
+      const teamElement = document.createElement('get-team');
+      teamElement.teams = team;
+      document.getElementById('team-detail').appendChild(teamElement);
    });
+};
 
-   teamHTML += `</tbody></table>`;
-
-   document.getElementById('teamDetail').innerHTML = teamHTML;
-}
-
-function getFavoriteTeam() {
-   var dbData = getFavData();
+const getFavoriteTeam = () => {
+   const dbData = getFavData();
    dbData.then((data) => {
-      var timBodyHtml = '';
+      let timBodyHtml = '';
       if (data.length > 0) {
          data.forEach((team) => {
             timBodyHtml += `
@@ -155,9 +134,9 @@ function getFavoriteTeam() {
       }
       document.getElementById('favoriteBody').innerHTML = timBodyHtml;
    });
-}
+};
 
-function buttonAction(data) {
+const buttonAction = (data) => {
    let btnSave = document.getElementById('btnSave');
    let btnDelete = document.getElementById('btnDelete');
 
@@ -182,10 +161,10 @@ function buttonAction(data) {
          btnSave.style.display = 'block';
          btnDelete.style.display = 'none';
       });
-}
+};
 
-function showLoader() {
-   var loader = `<div class="preloader-wrapper big active">
+const showLoader = () => {
+   const loader = `<div class="preloader-wrapper big active">
     <div class="spinner-layer spinner-blue-only" >
       <div class="circle-clipper left">
         <div class="circle"></div>
@@ -198,8 +177,10 @@ function showLoader() {
   </div>`;
 
    document.getElementById('loader').innerHTML = loader;
-}
+};
 
-function hideLoader() {
+const hideLoader = () => {
    document.getElementById('loader').innerHTML = '';
-}
+};
+
+export { getTeam, getStandings, getFavoriteTeam };

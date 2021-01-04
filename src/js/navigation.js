@@ -1,3 +1,5 @@
+import { getStandings, getFavoriteTeam } from './api_football';
+
 document.addEventListener('DOMContentLoaded', function () {
    // SIDEBAR NAVIGATION
    const elems = document.querySelectorAll('.sidenav');

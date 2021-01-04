@@ -1,3 +1,5 @@
+import runtime from 'serviceworker-webpack-plugin/lib/runtime';
+
 function urlBase64ToUint8Array(base64String) {
    const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
    const base64 = (base64String + padding)
@@ -19,11 +21,10 @@ if (!('serviceWorker' in navigator)) {
 }
 // Register service worker
 function registerServiceWorker() {
-   return navigator.serviceWorker
-      .register('service-worker.js')
-      .then(function (registration) {
+   const registration = runtime.register();
+   registration
+      .then(function () {
          console.log('Registrasi service worker berhasil.');
-         return registration;
       })
       .catch(function (err) {
          console.error('Registrasi service worker gagal.', err);
